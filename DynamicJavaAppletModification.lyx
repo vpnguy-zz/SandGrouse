@@ -1,0 +1,366 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Dynamic Java Applet Modification
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Darkred
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage cleardoublepage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+This page intentionally left blank
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Abstract
+\end_layout
+
+\begin_layout Standard
+Frequently Java provides an entry way for malicious code via so called Java
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Drive-by
+\begin_inset Quotes erd
+\end_inset
+
+ applets that attempt to silently install software onto a computer.
+ Antivirus software attempts to block the majority of these by blacklisting
+ domain names or blacklisting individual static signatures.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+This paper presents an approach using dynamic compilation of Java applets
+ to avoid static signature tags that antivirus software attempts to use
+ to detect such drive-by attacks, thanks to reductions in costs of fast
+ servers it is now possible to utilize obfuscation to create and serve a
+ unique Java applet to each individual visitor thus rendering static detection
+ impossible.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+It could pose a threat to many antivirus systems that do not have a frequently
+ updated domain blacklist.
+ Currently there is no method of mitigation other than domain blacklists
+ and Java applet whitelists.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Introduction
+\end_layout
+
+\begin_layout Standard
+The Java 
+\begin_inset Quotes eld
+\end_inset
+
+Drive-by
+\begin_inset Quotes erd
+\end_inset
+
+ is well known as the most common attack vector in exploit packs circulating
+ the internet.
+ While Java applets are mainly used to deliver software to a customer with
+ ease the same technology is frequently used for malicious intentions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+Malware authors have been searching out and exploiting such Java exploits
+ for profit and personal gain causing an explosion in the number of effected
+ computers.
+ Oracle has been struggling to keep up with patching all the exploits found
+ thus requiring antivirus vendors to rely on domain name blacklisting and
+ finding static signatures as the applet is transferred to the client computer.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+While static signatures work fine for detecting massively spread generic
+ viruses they preform very poorly against specialized unique threats.
+ This paper describes a method in which a malicious Java applet could be
+ changed for each individual user thus severely hampering the effectiveness
+ of static signature based detection.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Dynamic Java Applet Modification
+\end_layout
+
+\begin_layout Standard
+Dynamic modification of malicious content to avoid static detections is
+ not a new concept and has been implemented by many including myself
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Masse Crypter 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/vpnguy/MasseCrypter
+\end_layout
+
+\end_inset
+
+ utilized dynamic modification to create a prime number logic time loop
+\end_layout
+
+\end_inset
+
+ but when dynamic modification exploits of common plugins such as the Java
+ platform get into the wild it can create a dangerous mix capable of exploiting
+ many systems.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Experiments
+\end_layout
+
+\begin_layout Standard
+Initially I created a simple test applet that automatically greeted a user
+ with a small message box containing a fixed string.
+ After creating a simple ghostwriting script to modify the class name and
+ message box contents the final implementation of SandGrouse was created
+ which allowed for dynamic modification, compilation and serving of a simple
+ test applet.
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Implementation
+\end_layout
+
+\begin_layout Standard
+The included proof of concept is known as SandGrouse 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://github.com/vpnguy/sandgrouse
+\end_layout
+
+\end_inset
+
+ , It attempts to modify an included benign Java applet by changing the
+ content of a message box and the Java class name.
+ Sandgrouse accomplishes said modifications by utilizing a php script with
+ basic string substitution functions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+SandGrouse uses a variety of techniques to assist in a malicious execution
+ of a Java applet including usage of a HTML iframe to allow the necessary
+ time for the php script to compile the payload applet.
+ By utilizing an iframe to allow delayed applet activation it not only prevents
+ automated virus scanners from flagging the site within their short observation
+ window but it also prevents server load from causing suspiciously long
+ load times that could cause potential traffic to become disinterested with
+ the attack page.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+SandGrouse also attempts to modify notification content and class names
+ to prevent static tagging of the bytes by a HTTP interception system.
+ By avoiding HTTP traffic based detection schemes SandGrouse is able to
+ slip past most commercial antivirus and firewall products.
+ SandGrouse can be detected via no means known to the author at the current
+ time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Implications
+\end_layout
+
+\begin_layout Standard
+By allowing an attacker to create multiple unique exploits with the same
+ payload SandGrouse and systems like it allow an attacker to extend the
+ undetected lifespan of an exploit on the wild internet.
+ With enough domains and HTML obfuscation SandGrouse could allow for an
+ exploit to run rampant until Oracle issues a patch to fix such an underlying
+ vulnerability which usually takes at least a couple weeks for the average
+ Java exploit.
+ If SandGrouse was combined with a XSS based redirection attack launched
+ from social media it could yield extremely high exploitation rates and
+ easily exploit thousands of computers.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Conclusion
+\end_layout
+
+\begin_layout Standard
+In conclusion dynamic applet modification is a very serious threat that
+ has no current means of mitigation.
+ The only countermeasure against such attacks is retroactive blacklists
+ on domains serving such malware or an automated scanner looking for *.class
+ files laying around a suspicious server.
+ Java exploits will continue to be a problem until Java is no longer a dominatin
+g force in the online world.
+\end_layout
+
+\end_body
+\end_document
